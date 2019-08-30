@@ -1,8 +1,6 @@
 package com.example.poll.security;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
@@ -41,5 +39,22 @@ public class JwtTokenProvider {
         return Long.parseLong(claims.getSubject());
     }
 
+    public boolean validateToken(String authToken) {
+        try {
+            Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
+            return true;
+        } catch (SignatureException e) {
+            log.error("Invalid JWT signature");
+        } catch (MalformedJwtException e) {
+            log.error("Invalid JWT token");
+        } catch (ExpiredJwtException e) {
+            log.error("Expired JWT token");
+        } catch (UnsupportedJwtException e) {
+            log.error("Unsupported JWT token");
+        } catch (IllegalArgumentException e) {
+            log.error("JWT claims string is empty");
+        }
+        return false;
+    }
 
 }

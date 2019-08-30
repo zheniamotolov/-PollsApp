@@ -22,3 +22,8 @@ logging:
     org:
       hibernate:
         SQL: DEBUG
+
+app.jwtSecret: JWTSupersecretKey
+app.jwtExpirationInMs: 60480000
+
+logging.level.org.springframework.web: TRACE
