@@ -1,4 +1,4 @@
-package com.example.poll.models;
+package com.example.poll.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

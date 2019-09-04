@@ -1,7 +1,7 @@
 package com.example.poll.repository;
 
-import com.example.poll.models.Role;
-import com.example.poll.models.RoleName;
+import com.example.poll.model.Role;
+import com.example.poll.model.RoleName;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

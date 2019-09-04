@@ -1,5 +1,6 @@
-package com.example.poll.models;
+package com.example.poll.model;
 
+import com.example.poll.model.audit.DateAudit;
 import lombok.*;
 import org.hibernate.annotations.NaturalId;
 
@@ -49,7 +50,7 @@ public class User extends DateAudit {
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
+            joinColumns = @JoinColumn(name = "user_id"), // field which store link to owned class in child class or third table
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private Set<Role> roles = new HashSet<>();

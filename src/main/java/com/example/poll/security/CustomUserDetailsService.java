@@ -1,9 +1,8 @@
 package com.example.poll.security;
 
-import com.example.poll.models.User;
+import com.example.poll.model.User;
 import com.example.poll.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Transient;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

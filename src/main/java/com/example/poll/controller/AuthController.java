@@ -1,9 +1,9 @@
 package com.example.poll.controller;
 
 import com.example.poll.exception.AppException;
-import com.example.poll.models.Role;
-import com.example.poll.models.RoleName;
-import com.example.poll.models.User;
+import com.example.poll.model.Role;
+import com.example.poll.model.RoleName;
+import com.example.poll.model.User;
 import com.example.poll.payload.ApiResponse;
 import com.example.poll.payload.JwtAuthenticationResponse;
 import com.example.poll.payload.LoginRequest;

@@ -1,6 +1,6 @@
 package com.example.poll.repository;
 
-import com.example.poll.models.User;
+import com.example.poll.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,6 +1,6 @@
 package com.example.poll.security;
 
-import com.example.poll.models.User;
+import com.example.poll.model.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
