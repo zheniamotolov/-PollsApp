@@ -11,6 +11,7 @@ import com.example.poll.security.UserPrincipal;
 import com.example.poll.service.PollService;
 import com.example.poll.utill.AppConstants;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,16 +20,16 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 public class UserController {
 
-//    @Autowired
+    @Autowired
     private UserRepository userRepository;
 
-//    @Autowired
+    @Autowired
     private PollRepository pollRepository;
 
-//    @Autowired
+    @Autowired
     private VoteRepository voteRepository;
 
-//    @Autowired
+    @Autowired
     private PollService pollService;
 
     @GetMapping("/user/me")

@@ -9,6 +9,7 @@ import com.example.poll.security.CurrentUser;
 import com.example.poll.security.UserPrincipal;
 import com.example.poll.service.PollService;
 import com.example.poll.utill.AppConstants;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -20,16 +21,16 @@ import java.net.URI;
 @RestController
 @RequestMapping("/api/polls")
 public class PollController {
-    //    @Autowired
+    @Autowired
     private PollRepository pollRepository;
 
-    //    @Autowired
+    @Autowired
     private VoteRepository voteRepository;
 
-    //    @Autowired
+    @Autowired
     private UserRepository userRepository;
 
-    //    @Autowired
+    @Autowired
     private PollService pollService;
 
     @GetMapping
@@ -54,7 +55,7 @@ public class PollController {
     @GetMapping("/pollId")
     public PollResponse getPollById(@CurrentUser UserPrincipal currentUser,
                                     @PathVariable Long pollId,
-                                    @Valid @RequestBody VoteRequest voteRequest){
+                                    @Valid @RequestBody VoteRequest voteRequest) {
         return pollService.castVoteAndGetUpdatedPoll(pollId, voteRequest, currentUser);
     }
 }
