@@ -52,10 +52,17 @@ public class PollController {
         return ResponseEntity.created(location).body(new ApiResponse(true, "Poll Created Successfully"));
     }
 
-    @GetMapping("/pollId")
+    @GetMapping("/{pollId}")
     public PollResponse getPollById(@CurrentUser UserPrincipal currentUser,
-                                    @PathVariable Long pollId,
-                                    @Valid @RequestBody VoteRequest voteRequest) {
+                                    @PathVariable Long pollId) {
+        return pollService.getPollById(pollId, currentUser);
+    }
+
+    @PostMapping("/{pollId}/votes")
+    @PreAuthorize("hasRole('USER')")
+    public PollResponse castVote(@CurrentUser UserPrincipal currentUser,
+                                 @PathVariable Long pollId,
+                                 @Valid @RequestBody VoteRequest voteRequest) {
         return pollService.castVoteAndGetUpdatedPoll(pollId, voteRequest, currentUser);
     }
 }

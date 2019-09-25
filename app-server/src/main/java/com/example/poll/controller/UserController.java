@@ -9,11 +9,16 @@ import com.example.poll.repository.VoteRepository;
 import com.example.poll.security.CurrentUser;
 import com.example.poll.security.UserPrincipal;
 import com.example.poll.service.PollService;
+import com.example.poll.service.UserService;
 import com.example.poll.utill.AppConstants;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api")
@@ -32,10 +37,13 @@ public class UserController {
     @Autowired
     private PollService pollService;
 
+    @Autowired
+    private UserService userService;
+
     @GetMapping("/user/me")
     @PreAuthorize("hasRole('USER')")
     public UserSummary getCurrentUser(@CurrentUser UserPrincipal currentUser) {
-        return new UserSummary(currentUser.getId(), currentUser.getUsername(), currentUser.getName());
+        return new UserSummary(currentUser.getId(), currentUser.getName(), currentUser.getUsername());
     }
 
     @GetMapping("/user/checkUsernameAvailability")
@@ -70,6 +78,16 @@ public class UserController {
                                                        @RequestParam(value = "page", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) int page,
                                                        @RequestParam(value = "size", defaultValue = AppConstants.DEFAULT_PAGE_SIZE) int size) {
         return pollService.getPollsVotedBy(username, currentUser, page, size);
+    }
+
+    @PatchMapping("/user/{username}")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<?> updateUserProfile(
+            @PathVariable(value = "username") String username,
+            @Valid @RequestBody UserSummaryUpdateDTO userSummaryUpdateDTO,
+            @CurrentUser UserPrincipal currentUser) {
+        userService.updateUserProfile(username, userSummaryUpdateDTO, currentUser);
+        return new ResponseEntity(new ApiResponse(true, "Updated"), HttpStatus.OK);
     }
 
 }

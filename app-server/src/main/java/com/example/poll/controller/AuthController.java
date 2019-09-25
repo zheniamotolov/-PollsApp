@@ -7,7 +7,7 @@ import com.example.poll.model.User;
 import com.example.poll.payload.ApiResponse;
 import com.example.poll.payload.JwtAuthenticationResponse;
 import com.example.poll.payload.LoginRequest;
-import com.example.poll.payload.SignUpRequest;
+import com.example.poll.payload.UserInfoDTO;
 import com.example.poll.repository.RoleRepository;
 import com.example.poll.repository.UserRepository;
 import com.example.poll.security.JwtTokenProvider;
@@ -62,21 +62,21 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
-        if (userRepository.existsByUsername(signUpRequest.getUsername())) {
+    public ResponseEntity<?> registerUser(@Valid @RequestBody UserInfoDTO userInfoDTO) {
+        if (userRepository.existsByUsername(userInfoDTO.getUsername())) {
             return new ResponseEntity(new ApiResponse(false, "Username is already taken"), HttpStatus.BAD_REQUEST);
         }
 
-        if (userRepository.existsByEmail(signUpRequest.getEmail())) {
+        if (userRepository.existsByEmail(userInfoDTO.getEmail())) {
             return new ResponseEntity(new ApiResponse(false, "Email already is use"), HttpStatus.BAD_REQUEST);
         }
 
         // creating user
         User user = User.builder()
-                .name(signUpRequest.getName())
-                .username(signUpRequest.getUsername())
-                .email(signUpRequest.getEmail())
-                .password(signUpRequest.getPassword())
+                .name(userInfoDTO.getName())
+                .username(userInfoDTO.getUsername())
+                .email(userInfoDTO.getEmail())
+                .password(userInfoDTO.getPassword())
                 .build();
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));

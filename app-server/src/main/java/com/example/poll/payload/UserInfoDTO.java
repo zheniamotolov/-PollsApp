@@ -7,7 +7,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @Data
-public class SignUpRequest {
+public class UserInfoDTO {
     @NotBlank
     @Size(min = 4, max = 40)
     private String name;
