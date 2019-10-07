@@ -13,22 +13,23 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class UserService {
 
+    final private UserRepository userRepository;
+
     @Autowired
-    UserRepository userRepository;
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
 
-    public void updateUserProfile(String username, UserSummaryUpdateDTO userSummaryUpdateDTO, UserPrincipal currentUser) {
+    public User updateUserProfile(String username, UserSummaryUpdateDTO userSummaryUpdateDTO, UserPrincipal currentUser) {
 
         User user = userRepository.findByUsername(username).orElseThrow(() -> new AppException("no such user"));
 
         if (userSummaryUpdateDTO.getName() != null) {
             user.setName(userSummaryUpdateDTO.getName());
         }
-        if (userSummaryUpdateDTO.getUsername() != null) {
-            user.setUsername(userSummaryUpdateDTO.getUsername());
-        }
 
-        userRepository.save(user);
+        return userRepository.save(user);
 
 
     }

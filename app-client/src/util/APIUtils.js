@@ -13,13 +13,14 @@ const request = (options) => {
     options = Object.assign({}, defaults, options);
 
     return fetch(options.url, options)
-    .then(response => 
+    .then(response =>
         response.json().then(json => {
             if(!response.ok) {
                 return Promise.reject(json);
             }
             return json;
-        })
+        }).catch(e=>
+        console.log(e))
     );
 };
 
@@ -55,6 +56,15 @@ export function login(loginRequest) {
         method: 'POST',
         body: JSON.stringify(loginRequest)
     });
+}
+
+export  function editUserName(username, editUserNameRequest){
+    return request({
+        url: API_BASE_URL + "/user/info/"+username,
+        method: 'PATCH',
+        body:JSON.stringify(editUserNameRequest) // TODO need to be refactored
+        }
+    )
 }
 
 export function signup(signupRequest) {

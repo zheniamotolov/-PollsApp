@@ -54,7 +54,9 @@ public class UserController {
     }
 
     @GetMapping("/users/{username}")
+    @PreAuthorize("hasRole('USER')")
     public UserProfile getUserProfile(@PathVariable(value = "username") String username) {
+//        try{
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "username", username));
 
@@ -62,6 +64,11 @@ public class UserController {
         long voteCount = voteRepository.countByUserId(user.getId());
 
         return new UserProfile(user.getId(), user.getUsername(), user.getName(), user.getCreatedAt(), pollCount, voteCount);
+//    }
+//        catch (AccessDeniedException e){
+//            throw new ResponseStatusException(
+//                    HttpStatus.UNAUTHORIZED, "You not authorised", e);
+//        }
     }
 
     @GetMapping("users/{username}/polls")
@@ -80,7 +87,7 @@ public class UserController {
         return pollService.getPollsVotedBy(username, currentUser, page, size);
     }
 
-    @PatchMapping("/user/{username}")
+    @PatchMapping("/user/info/{username}")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> updateUserProfile(
             @PathVariable(value = "username") String username,
