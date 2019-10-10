@@ -1,4 +1,4 @@
-FROM adoptopenjdk/openjdk11:latest as build
+FROM adoptopenjdk/openjdk11:jdk-11.0.4_11-alpine-slim as build
 
 # Set the current working directory inside the image
 WORKDIR /app
@@ -23,7 +23,7 @@ RUN ./mvnw package -DskipTests
 RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../*.jar)
 
 #### Stage 2: A minimal docker image with command to run the app
-FROM adoptopenjdk/openjdk11:latest
+FROM adoptopenjdk/openjdk11:jre-11.0.4_11-alpine
 
 ARG DEPENDENCY=/app/target/dependency
 
