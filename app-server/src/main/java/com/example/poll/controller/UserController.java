@@ -13,6 +13,8 @@ import com.example.poll.service.UserService;
 import com.example.poll.utill.AppConstants;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -25,20 +27,24 @@ import javax.validation.Valid;
 @Slf4j
 public class UserController {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+
+    private final PollRepository pollRepository;
+
+    private final VoteRepository voteRepository;
+
+    private final PollService pollService;
+
+    private final UserService userService;
 
     @Autowired
-    private PollRepository pollRepository;
-
-    @Autowired
-    private VoteRepository voteRepository;
-
-    @Autowired
-    private PollService pollService;
-
-    @Autowired
-    private UserService userService;
+    public UserController(UserRepository userRepository, PollRepository pollRepository, VoteRepository voteRepository, PollService pollService, UserService userService) {
+        this.userRepository = userRepository;
+        this.pollRepository = pollRepository;
+        this.voteRepository = voteRepository;
+        this.pollService = pollService;
+        this.userService = userService;
+    }
 
     @GetMapping("/user/me")
     @PreAuthorize("hasRole('USER')")
@@ -75,16 +81,21 @@ public class UserController {
     public PagedResponse<PollResponse> getPollsCreatedBy(@PathVariable(value = "username") String username,
                                                          @CurrentUser UserPrincipal currentUser,
                                                          @RequestParam(value = "page", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) int page,
-                                                         @RequestParam(value = "size", defaultValue = AppConstants.DEFAULT_PAGE_SIZE) int size) {
-        return pollService.getPollsCreatedBy(username, currentUser, page, size);
+                                                         @RequestParam(value = "size", defaultValue = AppConstants.DEFAULT_PAGE_SIZE) int size,
+                                                         @RequestParam(value = "query", defaultValue = "") String query) {
+        return pollService.getPollsCreatedBy(username, currentUser, page, size,query);
     }
 
     @GetMapping("/users/{username}/votes")
     public PagedResponse<PollResponse> getPollsVotedBy(@PathVariable(value = "username") String username,
-                                                       @CurrentUser UserPrincipal currentUser,
-                                                       @RequestParam(value = "page", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) int page,
-                                                       @RequestParam(value = "size", defaultValue = AppConstants.DEFAULT_PAGE_SIZE) int size) {
-        return pollService.getPollsVotedBy(username, currentUser, page, size);
+                                              @CurrentUser UserPrincipal currentUser,
+                                              @RequestParam(value = "page", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) int page,
+                                              @RequestParam(value = "size", defaultValue = AppConstants.DEFAULT_PAGE_SIZE) int size,
+                                                       @RequestParam(value = "query", defaultValue = "") String query,
+                                              @RequestParam(value = "sortBy", defaultValue = AppConstants.DEFAULT_SORT_BY) String sortBy,
+                                              @RequestParam(value = "direction", defaultValue = AppConstants.DEFAULT_SORT_ORDER) String direction
+                                              ) {
+        return pollService.getPollsVotedBy(username, currentUser,page,size,query,sortBy,direction);
     }
 
     @PatchMapping("/user/info/{username}")
@@ -94,7 +105,7 @@ public class UserController {
             @Valid @RequestBody UserSummaryUpdateDTO userSummaryUpdateDTO,
             @CurrentUser UserPrincipal currentUser) {
         userService.updateUserProfile(username, userSummaryUpdateDTO, currentUser);
-        return new ResponseEntity(new ApiResponse(true, "Updated"), HttpStatus.OK);
+        return ResponseEntity.ok("Updated");
     }
 
 }

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {editUserName, getUserProfile} from "../../util/APIUtils";
 import './UserInfo.css';
-import {Button, Form, Input} from "antd";
+import {Button, Form, Input, notification} from "antd";
 import NotFound from "../../common/NotFound";
 import ServerError from "../../common/ServerError";
 
@@ -59,14 +59,27 @@ class UserInfoForm extends Component {
     handleSubmit(event) {
         event.preventDefault();
         this.props.form.validateFields((err, values) => {
-            if (!err) {
-                console.log(values);
-                editUserName(this.props.username, values)
-                    .then(response => {
-                        window.location.reload();
-                    })
+                if (!err) {
+                    editUserName(this.props.username, values)
+                        .then(response => {
+                            window.location.reload();
+                        })
+                        .catch(error => {
+                            if (error.status === 400) {
+                                notification.error({
+                                    message: 'Polling App',
+                                    description: 'New name should be with length min 4 symbols to 30 symbols'
+                                });
+                            } else {
+                                notification.error({
+                                    message: 'Polling App',
+                                    description: error.message || 'Sorry! Something went wrong. Please try again!'
+                                });
+                            }
+                        });
+                }
             }
-        });
+        );
     }
 
     componentDidMount() {
@@ -98,10 +111,14 @@ class UserInfoForm extends Component {
                 {
                     this.state.user ? (
                         <div className="edit-container">
-                            <Form className="edit-form" onSubmit={this.handleSubmit}>
+
+                            <Form className="edit-form" onSubmit={this.hndleSubmit}>
+                                <Form.Item style={{marginBottom: -40}}>
+                                    <h3>Change first name</h3>
+                                </Form.Item>
                                 <Form.Item>
                                     {getFieldDecorator('name', {
-                                        rules: [{required: true, message: 'Please new  name!'}],
+                                        rules: [{required: true, message: 'Please enter new name!'}],
                                     })(
                                         <Input
                                             placeholder={this.state.user.name}

@@ -1,11 +1,11 @@
-import { API_BASE_URL, POLL_LIST_SIZE, ACCESS_TOKEN } from '../constants';
+import {ACCESS_TOKEN, API_BASE_URL} from '../constants';
 
 const request = (options) => {
     const headers = new Headers({
         'Content-Type': 'application/json',
     })
-    
-    if(localStorage.getItem(ACCESS_TOKEN)) {
+
+    if (localStorage.getItem(ACCESS_TOKEN)) {
         headers.append('Authorization', 'Bearer ' + localStorage.getItem(ACCESS_TOKEN))
     }
 
@@ -13,23 +13,24 @@ const request = (options) => {
     options = Object.assign({}, defaults, options);
 
     return fetch(options.url, options)
-    .then(response =>
-        response.json().then(json => {
-            if(!response.ok) {
-                return Promise.reject(json);
-            }
-            return json;
-        }).catch(e=>
-        console.log(e))
-    );
+        .then(response =>
+            response.json()
+                .then(json => {
+                    if (!response.ok) {
+                        return Promise.reject(json);
+                    }
+                    return json;
+                })
+        );
 };
 
-export function getAllPolls(page, size) {
-    page = page || 0;
-    size = size || POLL_LIST_SIZE;
+export function getAllPolls(page, size, query) {
+    // page = page || 0; // Todo fix double check on undefined
+    // size = size || POLL_LIST_SIZE;
+    // query = query || '';
 
     return request({
-        url: API_BASE_URL + "/polls?page=" + page + "&size=" + size,
+        url: API_BASE_URL + "/polls?size=" + size + "&page=" + page + "&query=" + query,
         method: 'GET'
     });
 }
@@ -38,9 +39,10 @@ export function createPoll(pollData) {
     return request({
         url: API_BASE_URL + "/polls",
         method: 'POST',
-        body: JSON.stringify(pollData)         
+        body: JSON.stringify(pollData)
     });
 }
+
 
 export function castVote(voteData) {
     return request({
@@ -58,11 +60,11 @@ export function login(loginRequest) {
     });
 }
 
-export  function editUserName(username, editUserNameRequest){
+export function editUserName(username, editUserNameRequest) {
     return request({
-        url: API_BASE_URL + "/user/info/"+username,
-        method: 'PATCH',
-        body:JSON.stringify(editUserNameRequest) // TODO need to be refactored
+            url: API_BASE_URL + "/user/info/" + username,
+            method: 'PATCH',
+            body: JSON.stringify(editUserNameRequest) // TODO need to be refactored
         }
     )
 }
@@ -91,7 +93,7 @@ export function checkEmailAvailability(email) {
 
 
 export function getCurrentUser() {
-    if(!localStorage.getItem(ACCESS_TOKEN)) {
+    if (!localStorage.getItem(ACCESS_TOKEN)) {
         return Promise.reject("No access token set.");
     }
 
@@ -108,22 +110,22 @@ export function getUserProfile(username) {
     });
 }
 
-export function getUserCreatedPolls(username, page, size) {
-    page = page || 0;
-    size = size || POLL_LIST_SIZE;
+export function getUserCreatedPolls(username, page, size, query) {
+    // page = page || 0;
+    // size = size || POLL_LIST_PAGE_SIZE;
 
     return request({
-        url: API_BASE_URL + "/users/" + username + "/polls?page=" + page + "&size=" + size,
+        url: API_BASE_URL + "/users/" + username + "/polls?page=" + page + "&size=" + size + "&query=" + query,
         method: 'GET'
     });
 }
 
-export function getUserVotedPolls(username, page, size) {
-    page = page || 0;
-    size = size || POLL_LIST_SIZE;
+export function getUserVotedPolls(username, page, size, query) {
+    // page = page || 0;
+    // size = size || POLL_LIST_PAGE_SIZE;
 
     return request({
-        url: API_BASE_URL + "/users/" + username + "/votes?page=" + page + "&size=" + size,
+        url: API_BASE_URL + "/users/" + username + "/votes?page=" + page + "&size=" + size + "&query=" + query,
         method: 'GET'
     });
 }

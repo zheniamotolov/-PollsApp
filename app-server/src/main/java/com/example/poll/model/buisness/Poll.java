@@ -33,7 +33,7 @@ public class Poll extends UserDateAudit {
             fetch = FetchType.EAGER,
             orphanRemoval = true // removed child when it's no longer referenced from the parent entity
     )
-    @Size(min = 2, max = 6)
+//    @Size(min = 2, max = 6)
     @Fetch(FetchMode.SELECT) // way of sql query loading records
     @BatchSize(size = 30) // optimization of sql query amounts
     private List<Choice> choices = new ArrayList<>();
@@ -41,7 +41,7 @@ public class Poll extends UserDateAudit {
     @NotNull
     public Instant expirationDateTime;
 
-    public void addChoice(Choice choice) {
+    public void addChoice(Choice choice) { // needed for bidirectional communication and synchronization
         choices.add(choice);
         choice.setPoll(this);
     }

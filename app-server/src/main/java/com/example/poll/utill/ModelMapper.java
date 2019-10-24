@@ -28,7 +28,7 @@ public class ModelMapper {
         List<ChoiceResponse> choiceResponses = poll.getChoices().stream().map(choice -> {
             ChoiceResponse choiceResponse = new ChoiceResponse();
             choiceResponse.setId(choice.getId());
-            choice.setText(choice.getText());
+            choiceResponse.setText(choice.getText());
 
             if (choiceVotesMap.containsKey(choice.getId())) {
                 choiceResponse.setVoteCount(choiceVotesMap.get(choice.getId()));

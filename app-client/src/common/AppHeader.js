@@ -87,7 +87,7 @@ function ProfileDropdownMenu(props) {
                 <Link to={`/user/info/${props.currentUser.username}`}>Edit info</Link>
             </Menu.Item>
             <Menu.Item key="logout" className="dropdown-item">
-                Logoutsss
+                Logout
             </Menu.Item>
         </Menu>
     );

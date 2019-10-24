@@ -4,9 +4,11 @@ package com.example.poll.model.buisness;
 import com.example.poll.model.User;
 import com.example.poll.model.audit.DateAudit;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
 @Table(name = "votes", uniqueConstraints = { //multiple uniqness keys constrait

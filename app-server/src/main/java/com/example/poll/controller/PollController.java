@@ -10,6 +10,7 @@ import com.example.poll.security.UserPrincipal;
 import com.example.poll.service.PollService;
 import com.example.poll.utill.AppConstants;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -21,23 +22,23 @@ import java.net.URI;
 @RestController
 @RequestMapping("/api/polls")
 public class PollController {
-    @Autowired
-    private PollRepository pollRepository;
+
+
+    private final PollService pollService;
 
     @Autowired
-    private VoteRepository voteRepository;
 
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private PollService pollService;
+    public PollController(PollService pollService) {
+        this.pollService = pollService;
+    }
 
     @GetMapping
     public PagedResponse<PollResponse> getPolls(@CurrentUser UserPrincipal currentUser,
-                                                @RequestParam(value = "page", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) int page,
-                                                @RequestParam(value = "size", defaultValue = AppConstants.DEFAULT_PAGE_SIZE) int size) {
-        return pollService.getAllPolls(currentUser, page, size);
+                                       @RequestParam(value = "page", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) int page,
+                                       @RequestParam(value = "size", defaultValue = AppConstants.DEFAULT_PAGE_SIZE) int size,
+                                       @RequestParam(value = "query", defaultValue = "") String query,
+                                       @RequestParam(value = "sortBy", defaultValue = AppConstants.DEFAULT_SORT_BY) String sortBy) {
+        return pollService.getAllPollsByQuery(currentUser, page, size,query,sortBy);
     }
 
     @PostMapping
