@@ -18,6 +18,7 @@ import PrivateRoute from '../common/PrivateRoute';
 import PollList from "../poll/PollList";
 
 import {Layout, notification} from 'antd';
+import OAuth2RedirectHandler from "../user/login/OAuth2RedirectHandler";
 
 const {Content} = Layout;
 
@@ -103,12 +104,17 @@ class App extends Component {
                             <Route exact path="/"
                                    render={(props) => <PollList isAuthenticated={this.state.isAuthenticated}
                                                                 currentUser={this.state.currentUser}
-                                                                handleLogout={this.handleLogout} {...props}/>}>
+                                                                handleLogout={this.handleLogout}
+                                                                {...props}/>}>
                             </Route>
                             <Route path="/login"
-                                   render={(props) => <Login onLogin={this.handleLogin} {...props} />}>
+                                   render={(props) => <Login onLogin={this.handleLogin}
+                                                             isAuthenticated={this.state.isAuthenticated}
+                                                             {...props} />}>
                             </Route>
-                            <Route path="/signup" component={Signup}>
+                            <Route path="/signup"
+                                   render={(props) => <Signup isAuthenticated={this.state.isAuthenticated}
+                                                              {...props}/>}>
                             </Route>
                             <Route path="/users/:username"
                                    render={(props) => <Profile isAuthenticated={this.state.isAuthenticated}
@@ -116,11 +122,14 @@ class App extends Component {
                                                                {...props}  />}>
                             </Route>
                             <PrivateRoute authenticated={this.state.isAuthenticated} path="/poll/new"
-                                          component={NewPoll} handleLogout={this.handleLogout}>
+                                          component={NewPoll}
+                                          handleLogout={this.handleLogout}>
                             </PrivateRoute>
                             <Route authenticated={this.state.isAuthenticated} path="/user/info/:username"
                                    handleLogout={this.handleLogout}
-                                          component={UserInfo}>
+                                   component={UserInfo}>
+                            </Route>
+                            <Route path="/oauth2/redirect" component={OAuth2RedirectHandler}>
                             </Route>
                             <Route component={NotFound}>
                             </Route>

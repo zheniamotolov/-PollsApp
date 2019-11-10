@@ -99,7 +99,7 @@ public class UserController {
     }
 
     @PatchMapping("/user/info/{username}")
-    @PreAuthorize("hasRole('USER')")
+//    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> updateUserProfile(
             @PathVariable(value = "username") String username,
             @Valid @RequestBody UserSummaryUpdateDTO userSummaryUpdateDTO,

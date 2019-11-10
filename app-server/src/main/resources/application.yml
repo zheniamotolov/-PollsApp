@@ -8,6 +8,7 @@ spring:
     password: demo
     initialization-mode: always
   jpa:
+    show-sql: true
     properties:
       hiberante:
         dialect: org.hibernate.dialect.MySQL5InnoDBDialect
@@ -16,6 +17,18 @@ spring:
   jackson:
     serialization.WRITE_DATES_AS_TIMESTAMPS: false
     time-zone: UTC
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            clientId: 420049322251-vgc4ink683hac89vsktgqirgkisnc7sn.apps.googleusercontent.com
+            clientSecret: LkBnlq4x4igZjyZumbYDop0f
+            redirectUriTemplate: "{baseUrl}/api/oauth2/callback/{registrationId}"
+            scope:
+              - email
+              - profile
+
 
 logging:
   level:
@@ -23,7 +36,15 @@ logging:
       hibernate:
         SQL: DEBUG
 
-app.jwtSecret: JWTSupersecretKey
-app.jwtExpirationInMs: 60480000
+
+app:
+  auth:
+    jwtSecret: JWTSupersecretKey
+    jwtExpirationInMs: 60480000
+  oauth2:
+    authorizedRedirectUris:
+    - http://localhost:3000/oauth2/redirect
+    - myandroidapp://oauth2/redirect
+    - myiosapp://oauth2/redirect
 
 logging.level.org.springframework.web: TRACE

@@ -7,6 +7,7 @@ import org.hibernate.annotations.NaturalId;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
@@ -34,8 +35,8 @@ public class User extends DateAudit {
     @Size(max = 40)
     private String name;
 
-    @NotBlank
-    @Size(max = 15)
+//    @NotBlank in oauth2 username can be abcent
+    @Size(max = 30)
     private String username;
 
     @NaturalId
@@ -44,11 +45,20 @@ public class User extends DateAudit {
     @Email
     private String email;
 
-    @NotBlank
+//    @NotBlank in oauth2 username can be abcent
     @Size(max = 100)
     private String password;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    private String imageUrl;
+
+    @NotNull
+    @Column(columnDefinition = "varchar(25) default 'local'")
+    @Enumerated(EnumType.STRING)
+    private AuthProvider provider;
+
+    private String providerId;
+
+    @ManyToMany(fetch = FetchType.EAGER) //Todo  Refactor to Lazy
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"), // field which store link to owned class in child class or third table
             inverseJoinColumns = @JoinColumn(name = "role_id")
