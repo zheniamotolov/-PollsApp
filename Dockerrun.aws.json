@@ -1,0 +1,29 @@
+ {
+	"AWSEBDockerrunVersion": 2,
+	"containerDefinitions": [
+		{
+			"name": "poll-app-server",
+			"image": "eugenemotolov/poll-app-server:latest",
+			"essential": true,
+			"memory": 256,
+			"portMappings": [
+				{
+					"hostPort": 8080,
+					"containerPort": 8080
+				}
+			]
+		},
+		{
+			"name": "poll-app-client",
+			"image": "eugenemotolov/poll-app-client:latest",
+			"essential": true,
+			"memory": 256,
+			"portMappings": [
+				{
+					"hostPort": 80,
+					"containerPort": 80
+				}
+			]
+		}
+	]
+}

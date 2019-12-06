@@ -45,14 +45,14 @@ public class User extends DateAudit {
     @Email
     private String email;
 
-//    @NotBlank in oauth2 username can be abcent
+//    @NotBlank in oauth2 password can be abcent
     @Size(max = 100)
     private String password;
 
     private String imageUrl;
 
     @NotNull
-    @Column(columnDefinition = "varchar(25) default 'local'")
+    // @Column(columnDefinition = "varchar(25)")  becuase java cannot get size of enum
     @Enumerated(EnumType.STRING)
     private AuthProvider provider;
 

@@ -1,4 +1,11 @@
 FROM adoptopenjdk/openjdk11:jdk-11.0.4_11-alpine-slim as build
+#VOLUME /tmp
+#EXPOSE 8080
+#ADD target/*.jar app.jar
+#ENV JAVA_OPTS=""
+#ENTRYPOINT [ "sh", "-c", "java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -jar /app.jar" ]
+#
+
 
 # Set the current working directory inside the image
 WORKDIR /app

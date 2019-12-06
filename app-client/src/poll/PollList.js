@@ -3,7 +3,7 @@ import {castVote, getAllPolls, getUserCreatedPolls, getUserVotedPolls} from '../
 import Poll from './Poll';
 import LoadingIndicator from '../common/LoadingIndicator';
 import { notification, Pagination} from 'antd';
-import {POLL_LIST_PAGE_SIZE} from '../constants';
+import {API_BASE_URL, POLL_LIST_PAGE_SIZE} from '../constants';
 import './PollList.css';
 import SearchPoll from "./SearchPoll";
 
@@ -32,6 +32,7 @@ class PollList extends Component {
 
     loadPollList(page = 0, size = POLL_LIST_PAGE_SIZE, query = '') {
         let promise;
+        console.log(API_BASE_URL)
         if (this.props.username) {
             if (this.props.type === 'USER_CREATED_POLLS') {
                 promise = getUserCreatedPolls(this.props.username, page, size,query);

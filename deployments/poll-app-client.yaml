@@ -14,7 +14,7 @@ spec:
     spec:                       # Spec for the containers that will run inside the Pods
       containers:
         - name: polling-app-client
-          image: eugenemotolov/pollsapp_app-client:0.0.1
+          image: eugenemotolov/pollsapp_app-client:latest
           imagePullPolicy: IfNotPresent
           ports:
             - name: http

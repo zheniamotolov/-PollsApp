@@ -28,7 +28,6 @@ export function getAllPolls(page, size, query) {
     // page = page || 0; // Todo fix double check on undefined
     // size = size || POLL_LIST_SIZE;
     // query = query || '';
-
     return request({
         url: API_BASE_URL + "/polls?size=" + size + "&page=" + page + "&query=" + query,
         method: 'GET'

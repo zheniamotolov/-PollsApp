@@ -1,6 +1,7 @@
 package com.example.poll.controller;
 
 import com.example.poll.exception.AppException;
+import com.example.poll.model.AuthProvider;
 import com.example.poll.model.Role;
 import com.example.poll.model.RoleName;
 import com.example.poll.model.User;
@@ -19,7 +20,10 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
@@ -75,12 +79,15 @@ public class AuthController {
             return new ResponseEntity(new ApiResponse(false, "Email already is use"), HttpStatus.BAD_REQUEST);
         }
 
+        AuthProvider provider = userInfoDTO.getProvider() == null ?
+                AuthProvider.local : AuthProvider.valueOf(userInfoDTO.getProvider());
         // creating user
         User user = User.builder()
                 .name(userInfoDTO.getName())
                 .username(userInfoDTO.getUsername())
                 .email(userInfoDTO.getEmail())
                 .password(userInfoDTO.getPassword())
+                .provider(provider)
                 .build();
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));

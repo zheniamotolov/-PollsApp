@@ -1,5 +1,6 @@
 package com.example.poll.payload;
 
+import com.example.poll.model.AuthProvider;
 import  lombok.Data;
 
 import javax.validation.constraints.Email;
@@ -24,4 +25,7 @@ public class UserInfoDTO {
     @NotBlank
     @Size(min = 6, max = 20)
     private String password;
+
+    @Size(max = 25)
+    private String provider;
 }
